@@ -4,9 +4,9 @@ import Unicorn from './unicorn';
 export default (props) => {
   let unicorns = props.unicorns.map(unicorn => {
     return (
-      <Unicorn key={unicorn.objectId}
-               id={unicorn.objectId}
-               user={props.user}
+      <Unicorn key={unicorn.id}
+               id={unicorn.id}
+               user={unicorn.creator}
                name={unicorn.name}
                color={unicorn.color}
                power={unicorn.power}/>

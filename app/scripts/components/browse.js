@@ -3,14 +3,28 @@ import $ from 'jquery';
 import { Link } from 'react-router';
 
 import UnicornList from './unicornList';
+import UnicornService from './../services/unicorns';
+import store from './../store';
+import actions from './../actions/unicornActions';
 
 class Browse extends React.Component {
+  componentDidMount() {
+    store.dispatch(actions.FETCH_ALL_UNICORNS());
+    UnicornService.fetchAll().then(data => {
+      store.dispatch(actions.RECEIVE_ALL_UNICORNS(data));
+    })
+  }
   render() {
+    let unicorns = [];
+    for (let unicorn in this.props.unicorns) {
+      unicorns.push(this.props.unicorns[unicorn]);
+    }
+    let unicornData = unicorns.filter(unicorn => {return unicorn.id})
     return (
       <section>
         <h1>Browse the Unicorns</h1>
         <Link to="new-unicorn">Create a new Unicorn!</Link>
-        <UnicornList unicorns={this.props.unicorns} user={this.props.user}/>
+        <UnicornList unicorns={unicornData}/>
       </section>
     );
   }

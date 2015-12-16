@@ -2,33 +2,28 @@ import React from 'react';
 import { Link } from 'react-router';
 import $ from 'jquery';
 
+import actions from './../actions/actions';
+import store from './../store';
+import UserService from './../services/user';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleResponse = this.handleResponse.bind(this);
-  }
-
-  handleResponse(data) {
-    localStorage.setItem('sessionToken', data.sessionToken);
-    $.ajaxSetup({
-      headers: {
-        "X-Parse-Session-Token": data.sessionToken
-      }
-    });
-    this.props.history.pushState(null, 'my-unicorns');
   }
 
   handleSubmit(e) {
+    console.log('hi');
     e.preventDefault();
     let username = this.refs.username.value;
     let password = this.refs.password.value;
-    $.ajax({
-      type: 'GET',
-      url: 'https://api.parse.com/1/login',
-      data: {username: username, password: password},
-      success: this.handleResponse
-    });
+    let data = {username: username, password: password}
+    store.dispatch(actions.FETCH_SESSION());
+    UserService.login(data).then( response => {
+      localStorage.setItem('sessionToken', response.sessionToken);
+      store.dispatch(actions.RECEIVE_SESSION(response));
+      this.props.history.pushState(null, 'my-unicorns');
+    })
   }
 
   render() {

@@ -2,72 +2,49 @@ import React from 'react';
 import { Link } from 'react-router';
 import $ from 'jquery';
 
+import actions from './../actions/actions';
+import store from './../store';
+import UserService from './../services/user';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
-
-    let sessionToken = localStorage.getItem('sessionToken');
-    if (sessionToken) {
-      $.ajaxSetup({
-        headers: {
-          "X-Parse-Session-Token": sessionToken
-        }
-      });
-    } else {
-      this.props.history.pushState(null, 'login');
-    }
-
-    this.state = {
-      user: {},
-      unicorns: []
-    }
-
-    this.handleUserData = this.handleUserData.bind(this);
-    this.handleUnicornData = this.handleUnicornData.bind(this);
-    this.handleNewUnicorn = this.handleNewUnicorn.bind(this);
+    this.state = store.getState();
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
-    this.fetchUserData();
-    this.fetchUnicorns();
+    store.subscribe( () => {
+      this.setState(store.getState())
+    })
+    if (localStorage.getItem('sessionToken')) {
+      store.dispatch(actions.FETCH_SESSION());
+      UserService.fetch().then( data => {
+        store.dispatch(actions.RECEIVE_SESSION(data));
+        localStorage.setItem('sessionToken', data.sessionToken);
+        this.props.history.pushState(null, 'my-unicorns');
+      });
+    }
   }
 
-  handleUserData(data) {
-    this.setState({user: data})
-  }
-
-  handleUnicornData(data) {
-    this.setState({unicorns: data.results})
-  }
-
-  handleNewUnicorn(e) {
-    e.preventDefault();
-    console.log('you wanna add a new Unicorn!');
-  }
-
-  fetchUnicorns() {
-    $.ajax({
-      url: 'https://api.parse.com/1/classes/Unicorn',
-      success: this.handleUnicornData
-    });
-  }
-
-  fetchUserData() {
-    $.ajax({
-      url: 'https://api.parse.com/1/users/me',
-      success: this.handleUserData
-    });
+  handleLogout() {
+    store.dispatch(actions.REQUEST_DELETE_SESSION());
+    UserService.logout().then( () => {
+      localStorage.removeItem('sessionToken');
+      store.dispatch(actions.RECEIVE_DELETE_SESSION());
+      this.props.history.pushState(null, 'login');
+    })
   }
 
   render() {
-    let childrenWithProps;
-    childrenWithProps = React.Children.map(this.props.children, child => {
-      let props = {user: this.state.user, unicorns: this.state.unicorns};
-      console.log(this.props.route);
-      if (this.props.route.pathName === 'new-unicorn') {
-        console.log('hi');
-        props.handleSubmit = this.handleNewUnicorn;
-      }
+    let logoutBtn,
+        profileBtn;
+    if (this.state.session.sessionToken) {
+      logoutBtn = <Link to="login" onClick={this.handleLogout}>Logout</Link>;
+      profileBtn = <Link to="my-unicorns">Profile</Link>;
+    }
+    let childrenWithProps = React.Children.map(this.props.children, child => {
+      let props = {session: this.state.session, unicorns: this.state.entities.unicorns};
       return React.cloneElement(child, props);
     });
     return (
@@ -77,7 +54,8 @@ class App extends React.Component {
         </header>
         <nav>
           <Link to="browse">Browse</Link>
-          <Link to="my-unicorns">Profile</Link>
+          {profileBtn}
+          {logoutBtn}
         </nav>
         {childrenWithProps}
       </div>
