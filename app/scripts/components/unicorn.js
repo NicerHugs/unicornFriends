@@ -23,6 +23,7 @@ class Unicorn extends React.Component {
   }
 
   render() {
+    let btn = this.props.type === 'add' ? <input type="button" onClick={this.handleClick} value="add to my unicorns"/> : undefined;
     return (
       <li className="unicorn">
       <img />
@@ -30,7 +31,7 @@ class Unicorn extends React.Component {
         <p>{this.props.color}</p>
         <p>{this.props.power}</p>
         <p>{this.props.creator}</p>
-        <input type="button" onClick={this.handleClick} value="add to my unicorns"/>
+        {btn}
       </li>
     );
   }

@@ -1,6 +1,17 @@
 import $ from 'jquery';
 
 export default {
+  register: function(data) {
+    return new Promise(function(resolve, reject) {
+      $.ajax({
+        type: 'POST',
+        url: 'https://api.parse.com/1/users',
+        data: JSON.stringify(data),
+        success: resolve,
+        fail: reject
+      });
+    });
+  },
   login: function(data) {
     return new Promise(function(resolve, reject) {
       $.ajax({

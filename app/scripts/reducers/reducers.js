@@ -2,6 +2,28 @@ import initialState from './../dataTree'
 
 function unicornApp(state = initialState, action) {
   switch (action.type) {
+    case 'REQUEST_NEW_USER':
+      return Object.assign({}, state, {
+        newUser: {
+          username: action.username,
+          isSaving: true
+        },
+        entities: Object.assign({}, state.entities, {
+          users: Object.assign({}, state.entities.unicorns, {
+            isFetching: true
+          })
+        })
+      });
+    case 'RECEIVE_NEW_USER':
+      return Object.assign({}, state, {
+        newUser: {
+          username: '',
+          isSaving: false
+        },
+        entities: Object.assign({}, state.entities, {
+          users: Object.assign({}, state.entities.users, {isFetching: false})
+        })
+      });
     case 'FETCH_SESSION':
       return Object.assign({}, state, {
         session: Object.assign({}, state.session, {isFetching: true})
@@ -10,9 +32,19 @@ function unicornApp(state = initialState, action) {
       return Object.assign({}, state, {
         session: Object.assign({}, state.session, {
           isFetching: false,
-          user: action.response.objectId,
+          id: action.response.objectId,
           username: action.response.username,
           sessionToken: action.response.sessionToken
+        }),
+        entities: Object.assign({}, state.entities, {
+          users: Object.assign({}, state.entities.users, [action.response].reduce((acum, user) => {
+            acum[user.objectId] = {
+              id: user.objectId,
+              username: user.username,
+              isAddingUnicornFriend: false,
+              unicornFriends: user.unicornFriends
+            }
+          }, {isFetching: false}))
         })
       });
     case 'REQUEST_DELETE_SESSION':
@@ -40,7 +72,6 @@ function unicornApp(state = initialState, action) {
       });
     case 'RECEIVE_ALL_UNICORNS':
       return Object.assign({}, state, {
-        unicorns: action.response.map(unicorn => {return unicorn.objectId}),
         entities: Object.assign({}, state.entities, {
           unicorns: Object.assign({}, state.entities.unicorns, action.response.reduce((acum, unicorn) => {
             acum[unicorn.objectId] = {
@@ -49,6 +80,43 @@ function unicornApp(state = initialState, action) {
               color: unicorn.color,
               power: unicorn.power,
               creator: unicorn.creator
+            }
+            return acum;
+          }, {isFetching: false}))
+        })
+      });
+    case 'REQUEST_NEW_UNICORN':
+      return Object.assign({}, state, {
+        newUnicorn: {
+          name: action.data.name,
+          color: action.data.color,
+          power: action.data.power,
+          creator: action.data.creator,
+          isSaving: true
+        },
+        entities: Object.assign({}, state.entities, {
+          unicorns: Object.assign({}, state.entities.unicorns, {
+            isFetching: true
+          })
+        })
+      });
+    case 'RECEIVE_NEW_UNICORN':
+      return Object.assign({}, state, {
+        newUnicorn: {
+          isSaving: false,
+          name: '',
+          color: '',
+          power: '',
+          creator: ''
+        },
+        entities: Object.assign({}, state.entities, {
+          unicorns: Object.assign({}, state.entities.unicorns, [action.response].reduce((acum, unicorn) => {
+            acum[unicorn.objectId] = {
+              id: unicorn.objectId,
+              name: state.newUnicorn.name,
+              color: state.newUnicorn.color,
+              power: state.newUnicorn.power,
+              creator: state.newUnicorn.creator
             }
             return acum;
           }, {isFetching: false}))

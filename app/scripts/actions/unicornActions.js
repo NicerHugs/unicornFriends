@@ -9,5 +9,17 @@ export default {
       type: 'RECEIVE_ALL_UNICORNS',
       response: response
     };
+  },
+  REQUEST_NEW_UNICORN: function REQUEST_NEW_UNICORN(data) {
+    return {
+      type: 'REQUEST_NEW_UNICORN',
+      data: data
+    };
+  },
+  RECEIVE_NEW_UNICORN: function RECEIVE_NEW_UNICORN(response) {
+    return {
+      type: 'RECEIVE_NEW_UNICORN',
+      response: response
+    };
   }
 }

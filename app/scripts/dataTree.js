@@ -15,9 +15,8 @@ export default {
   },
   newUser: {
     isSaving: false,
-    name: ''
+    username: ''
   },
-  unicorns: [],
   entities: {
     users: {
       isFetching: false
@@ -32,7 +31,7 @@ export default {
 //
 // '1': {
 //   id: '1',
-//   name: '',
+//   username: '',
 //   isAddingUnicornFriend: false,
 //   unicornFriends: [id, id]
 // }

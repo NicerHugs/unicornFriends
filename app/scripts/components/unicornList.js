@@ -9,7 +9,8 @@ export default (props) => {
                user={unicorn.creator}
                name={unicorn.name}
                color={unicorn.color}
-               power={unicorn.power}/>
+               power={unicorn.power}
+               type={props.type}/>
     )
   });
   return (

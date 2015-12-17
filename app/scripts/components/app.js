@@ -37,11 +37,13 @@ class App extends React.Component {
   }
 
   render() {
-    let logoutBtn,
+    let sessionBtns,
         profileBtn;
     if (this.state.session.sessionToken) {
-      logoutBtn = <Link to="login" onClick={this.handleLogout}>Logout</Link>;
-      profileBtn = <Link to="my-unicorns">Profile</Link>;
+      sessionBtns = <Link to="login" onClick={this.handleLogout}>Logout</Link>;
+      profileBtn = <span><Link to="my-unicorns">Profile</Link></span>
+    } else {
+      sessionBtns = <span><Link to="login">Login</Link><Link to="signup">Sign up</Link></span>
     }
     let childrenWithProps = React.Children.map(this.props.children, child => {
       let props = {session: this.state.session, unicorns: this.state.entities.unicorns};
@@ -55,7 +57,7 @@ class App extends React.Component {
         <nav>
           <Link to="browse">Browse</Link>
           {profileBtn}
-          {logoutBtn}
+          {sessionBtns}
         </nav>
         {childrenWithProps}
       </div>

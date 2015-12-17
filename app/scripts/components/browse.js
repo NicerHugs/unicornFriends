@@ -16,6 +16,7 @@ class Browse extends React.Component {
   }
   render() {
     let unicorns = [];
+    let type = this.props.session.sessionToken ? "add" : undefined;
     for (let unicorn in this.props.unicorns) {
       unicorns.push(this.props.unicorns[unicorn]);
     }
@@ -24,7 +25,7 @@ class Browse extends React.Component {
       <section>
         <h1>Browse the Unicorns</h1>
         <Link to="new-unicorn">Create a new Unicorn!</Link>
-        <UnicornList unicorns={unicornData}/>
+        <UnicornList unicorns={unicornData} type={type} />
       </section>
     );
   }
