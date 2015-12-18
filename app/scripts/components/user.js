@@ -39,17 +39,21 @@ class User extends React.Component {
   }
 
   componentDidMount() {
-    console.log('hi');
-    let unicornIds;
-    if (this.props.params.userId) {
-      unicornIds = this.props.users[this.props.params.userId].unicornFriends;
-    } else {
-      unicornIds = this.props.session.unicornFriends || [];
+    if (!this.props.session.username) {
+      console.log('no username!');
     }
-    let unLoadedUnicorns = unicornIds.filter( id => {
-      return !this.props.unicorns[id]
-    });
-    this.fetchUnicorns(unLoadedUnicorns);
+    if (!this.props.unicorns.isFetching) {
+      let unicornIds;
+      if (this.props.params.userId) {
+        unicornIds = this.props.users[this.props.params.userId].unicornFriends;
+      } else {
+        unicornIds = this.props.session.unicornFriends || [];
+      }
+      let unLoadedUnicorns = unicornIds.filter( id => {
+        return !this.props.unicorns[id]
+      });
+      this.fetchUnicorns(unLoadedUnicorns);
+    }
   }
 
   render() {

@@ -7,7 +7,16 @@ export default {
         type: 'POST',
         url: 'https://api.parse.com/1/users',
         data: JSON.stringify(data),
-        success: resolve,
+        success: response => {
+          $.ajax({
+            headers: {
+              "X-Parse-Session-Token": response.sessionToken
+            },
+            url: 'https://api.parse.com/1/users/me',
+            success: resolve,
+            fail: reject
+          })
+        },
         fail: reject
       });
     });
