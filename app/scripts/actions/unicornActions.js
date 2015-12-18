@@ -1,12 +1,12 @@
 export default {
-  FETCH_ALL_UNICORNS: function FETCH_ALL_UNICORNS() {
+  FETCH_UNICORNS: function FETCH_UNICORNS() {
     return {
-      type: 'FETCH_ALL_UNICORNS'
+      type: 'FETCH_UNICORNS'
     };
   },
-  RECEIVE_ALL_UNICORNS: function RECEIVE_ALL_UNICORNS(response) {
+  RECEIVE_UNICORNS: function RECEIVE_UNICORNS(response) {
     return {
-      type: 'RECEIVE_ALL_UNICORNS',
+      type: 'RECEIVE_UNICORNS',
       response: response
     };
   },

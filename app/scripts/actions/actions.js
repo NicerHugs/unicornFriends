@@ -37,5 +37,12 @@ export default {
       type: 'RECEIVE_DELETE_SESSION',
       response
     };
+  },
+
+  RECEIVE_UNICORN_FRIEND: function RECEIVE_UNICORN_FRIEND(response) {
+    return {
+      type: 'RECEIVE_UNICORN_FRIEND',
+      id: response.objectId
+    };
   }
 }

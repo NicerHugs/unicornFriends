@@ -1,6 +1,10 @@
 import React from 'react';
 import $ from 'jquery';
 
+import UserService from './../services/user';
+import store from './../store';
+import actions from './../actions/actions';
+
 class Unicorn extends React.Component {
   constructor(props) {
     super(props);
@@ -8,18 +12,10 @@ class Unicorn extends React.Component {
   }
 
   handleClick() {
-    let data = {
-      unicorns : {
-        __op: "AddUnique",
-        objects:[this.props.id]}
-    }
+    UserService.addUnicornFriend(this.props.session.id, this.props.id).then(id => {
+      store.dispatch(actions.RECEIVE_UNICORN_FRIEND(id))
+    })
 
-    $.ajax({
-      url: 'https://api.parse.com/1/users/' + this.props.user.objectId,
-      type: 'PUT',
-      data: JSON.stringify(data),
-      success: this.props.handleUserUpdated
-    });
   }
 
   render() {

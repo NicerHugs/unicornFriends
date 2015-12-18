@@ -2,9 +2,11 @@ export default {
   session: {
     isDeleting: false,
     isFetching: false,
-    user: '',
+    id: '',
     username: '',
     sessionToken: '',
+    unicornFriends: [],
+    isAddingUnicornFriend: false
   },
   newUnicorn: {
     isSaving: false,
@@ -33,7 +35,8 @@ export default {
 //   id: '1',
 //   username: '',
 //   isAddingUnicornFriend: false,
-//   unicornFriends: [id, id]
+//   unicornFriends: [id, id],
+//   isFetching: false
 // }
 //
 // unicorn looks like this:
@@ -43,5 +46,6 @@ export default {
 //     name: '',
 //     color: '',
 //     power: '',
-//     creator: id
+//     creator: id,
+//     isFetching: false
 //   }

@@ -9,10 +9,10 @@ import actions from './../actions/unicornActions';
 
 class Browse extends React.Component {
   componentDidMount() {
-    store.dispatch(actions.FETCH_ALL_UNICORNS());
+    store.dispatch(actions.FETCH_UNICORNS());
     UnicornService.fetchAll().then(data => {
-      store.dispatch(actions.RECEIVE_ALL_UNICORNS(data));
-    })
+      store.dispatch(actions.RECEIVE_UNICORNS(data));
+    });
   }
   render() {
     let unicorns = [];
@@ -25,7 +25,7 @@ class Browse extends React.Component {
       <section>
         <h1>Browse the Unicorns</h1>
         <Link to="new-unicorn">Create a new Unicorn!</Link>
-        <UnicornList unicorns={unicornData} type={type} />
+        <UnicornList unicorns={unicornData} type={type} session={this.props.session}/>
       </section>
     );
   }

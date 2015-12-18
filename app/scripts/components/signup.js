@@ -18,8 +18,8 @@ class Signup extends React.Component {
     let data = {username, password: this.refs.password.value};
     store.dispatch(actions.REQUEST_NEW_USER(username))
     UserService.register(data).then(response => {
-      console.log(response);
       store.dispatch(actions.RECEIVE_NEW_USER());
+      localStorage.setItem('sessionToken', response.sessionToken);
       store.dispatch(actions.RECEIVE_SESSION(response));
       this.refs.username.value = '';
       this.refs.password.value = '';

@@ -46,7 +46,11 @@ class App extends React.Component {
       sessionBtns = <span><Link to="login">Login</Link><Link to="signup">Sign up</Link></span>
     }
     let childrenWithProps = React.Children.map(this.props.children, child => {
-      let props = {session: this.state.session, unicorns: this.state.entities.unicorns};
+      let props = {
+        session: this.state.session,
+        unicorns: this.state.entities.unicorns,
+        users: this.state.entities.users
+      };
       return React.cloneElement(child, props);
     });
     return (

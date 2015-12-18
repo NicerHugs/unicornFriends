@@ -6,11 +6,12 @@ export default (props) => {
     return (
       <Unicorn key={unicorn.id}
                id={unicorn.id}
-               user={unicorn.creator}
+               creator={unicorn.creator}
                name={unicorn.name}
                color={unicorn.color}
                power={unicorn.power}
-               type={props.type}/>
+               type={props.type}
+               session={props.session}/>
     )
   });
   return (

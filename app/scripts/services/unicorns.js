@@ -13,6 +13,34 @@ export default {
       });
     });
   },
+  fetchByIds: function(ids) {
+    let url = 'https://api.parse.com/1/classes/Unicorn';
+    if (typeof ids === 'string') {
+      url = url + '/' + ids;
+    } else {
+      url = url + '?where=' + JSON.stringify({
+        $or: ids.map(id => {
+          return {objectId: id};
+        })
+      });
+    }
+    return new Promise(function(resolve, reject) {
+      $.ajax({
+        headers: {
+          "X-Parse-Session-Token": localStorage.getItem('sessionToken')
+        },
+        url: url,
+        success: response => {
+          if (response.results) {
+            resolve(response.results)
+          } else {
+            resolve(response);
+          }
+        },
+        fail: reject
+      });
+    });
+  },
   saveNew: function(data) {
     return new Promise(function(resolve, reject) {
       $.ajax({

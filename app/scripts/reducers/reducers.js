@@ -34,15 +34,18 @@ function unicornApp(state = initialState, action) {
           isFetching: false,
           id: action.response.objectId,
           username: action.response.username,
-          sessionToken: action.response.sessionToken
+          sessionToken: action.response.sessionToken,
+          isAddingUnicornFriend: false,
+          unicornFriends: action.response.unicornFriends || []
         }),
         entities: Object.assign({}, state.entities, {
           users: Object.assign({}, state.entities.users, [action.response].reduce((acum, user) => {
             acum[user.objectId] = {
+              isFetching: false,
               id: user.objectId,
               username: user.username,
               isAddingUnicornFriend: false,
-              unicornFriends: user.unicornFriends
+              unicornFriends: user.unicornFriends || []
             }
           }, {isFetching: false}))
         })
@@ -57,12 +60,21 @@ function unicornApp(state = initialState, action) {
       return Object.assign({}, state, {
         session: Object.assign({}, state.session, {
           isDeleting: false,
-          user: '',
+          id: '',
           username: '',
           sessionToken: ''
         })
       });
-    case 'FETCH_ALL_UNICORNS':
+    case 'RECEIVE_UNICORN_FRIEND':
+      return Object.assign({}, state, {
+        session: Object.assign({}, state.session, {
+          unicornFriends: state.session.unicornFriends.reduce((acum, id) => {
+            acum.push(id);
+            return acum;
+          }, [action.id])
+        })
+      })
+    case 'FETCH_UNICORNS':
       return Object.assign({}, state, {
         entities: Object.assign({}, state.entities, {
           unicorns: Object.assign({}, state.entities.unicorns, {
@@ -70,7 +82,7 @@ function unicornApp(state = initialState, action) {
           })
         })
       });
-    case 'RECEIVE_ALL_UNICORNS':
+    case 'RECEIVE_UNICORNS':
       return Object.assign({}, state, {
         entities: Object.assign({}, state.entities, {
           unicorns: Object.assign({}, state.entities.unicorns, action.response.reduce((acum, unicorn) => {
