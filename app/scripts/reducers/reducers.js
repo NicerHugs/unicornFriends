@@ -68,10 +68,7 @@ function unicornApp(state = initialState, action) {
     case 'RECEIVE_UNICORN_FRIEND':
       return Object.assign({}, state, {
         session: Object.assign({}, state.session, {
-          unicornFriends: state.session.unicornFriends.reduce((acum, id) => {
-            acum.push(id);
-            return acum;
-          }, [action.id])
+          unicornFriends: action.response.unicornFriends
         })
       })
     case 'FETCH_UNICORNS':

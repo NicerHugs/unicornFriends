@@ -40,9 +40,10 @@ export default {
   },
 
   RECEIVE_UNICORN_FRIEND: function RECEIVE_UNICORN_FRIEND(response) {
+    console.log(response);
     return {
       type: 'RECEIVE_UNICORN_FRIEND',
-      id: response.objectId
+      response: response
     };
   }
 }
