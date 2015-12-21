@@ -25,7 +25,7 @@ class Browse extends React.Component {
       <section>
         <h1>Browse the Unicorns</h1>
         <Link to="new-unicorn">Create a new Unicorn!</Link>
-        <UnicornList unicorns={unicornData} type={type} session={this.props.session}/>
+        <UnicornList unicorns={unicornData} type={type} session={this.props.session} users={this.props.users}/>
       </section>
     );
   }

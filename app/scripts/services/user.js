@@ -1,5 +1,9 @@
 import $ from 'jquery';
 
+let headers = {
+  "X-Parse-Session-Token": localStorage.getItem('sessionToken')
+}
+
 export default {
   register: function(data) {
     return new Promise(function(resolve, reject) {
@@ -34,9 +38,7 @@ export default {
   logout: function() {
     return new Promise(function(resolve, reject) {
       $.ajax({
-        headers: {
-          "X-Parse-Session-Token": localStorage.getItem('sessionToken')
-        },
+        headers,
         url: 'https://api.parse.com/1/logout',
         type: 'POST',
         success: resolve,
@@ -47,14 +49,22 @@ export default {
   fetch: function() {
     return new Promise(function(resolve, reject) {
       $.ajax({
-        headers: {
-          "X-Parse-Session-Token": localStorage.getItem('sessionToken')
-        },
+        headers,
         url: 'https://api.parse.com/1/users/me',
         success: resolve,
         fail: reject
       });
     });
+  },
+  fetchUserById: function(id) {
+    return new Promise(function(resolve, reject) {
+      $.ajax({
+        headers,
+        url: `https://api.parse.com/1/users/${id}`,
+        success: resolve,
+        fail: reject
+      })
+    })
   },
   addUnicornFriend: function(userId, unicornId) {
     return new Promise(function(resolve, reject) {
@@ -64,9 +74,7 @@ export default {
           objects:[unicornId]}
       };
       $.ajax({
-        headers: {
-          "X-Parse-Session-Token": localStorage.getItem('sessionToken')
-        },
+        headers,
         url: 'https://api.parse.com/1/users/' + userId,
         type: 'PUT',
         data: JSON.stringify(data),

@@ -20,6 +20,7 @@ ReactDom.render((
       <Route path="my-unicorns" component={User}/>
       <Route path="browse" component={Browse}/>
       <Route path="new-unicorn" component={New}/>
+      <Route path="users/:userId" component={User}/>
       <Route path="*" component={NoMatch}/>
     </Route>
   </Router>

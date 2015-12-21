@@ -39,8 +39,19 @@ export default {
     };
   },
 
+  REQUEST_FETCH_USER: function REQUEST_FETCH_USER() {
+    return {
+      type: 'REQUEST_FETCH_USER',
+    }
+  },
+  RECEIVE_EXISTING_USER: function RECEIVE_EXISTING_USER(response) {
+    return {
+      type: 'RECEIVE_EXISTING_USER',
+      response: response
+    }
+  },
+
   RECEIVE_UNICORN_FRIEND: function RECEIVE_UNICORN_FRIEND(response) {
-    console.log(response);
     return {
       type: 'RECEIVE_UNICORN_FRIEND',
       response: response

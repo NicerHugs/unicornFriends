@@ -47,6 +47,7 @@ function unicornApp(state = initialState, action) {
               isAddingUnicornFriend: false,
               unicornFriends: user.unicornFriends || []
             }
+            return acum;
           }, {isFetching: false}))
         })
       });
@@ -65,12 +66,35 @@ function unicornApp(state = initialState, action) {
           sessionToken: ''
         })
       });
+    case 'REQUEST_FETCH_USER':
+      return Object.assign({}, state, {
+        entities: Object.assign({}, state.entities, {
+          users: Object.assign({}, state.entities.users, {
+            isFetching: true
+          })
+        })
+      });
+    case 'RECEIVE_EXISTING_USER':
+      return Object.assign({}, state, {
+        entities: Object.assign({}, state.entities, {
+          users: Object.assign({}, state.entities.users, [action.response].reduce((acum, user) => {
+            acum[user.objectId] = {
+              id: user.objectId,
+              username: user.username,
+              isAddingUnicornFriend: false,
+              unicornFriends: user.unicornFriends,
+              isFetching: false
+            }
+            return acum;
+          }, {isFetching: false}))
+        })
+      });
     case 'RECEIVE_UNICORN_FRIEND':
       return Object.assign({}, state, {
         session: Object.assign({}, state.session, {
           unicornFriends: action.response.unicornFriends
         })
-      })
+      });
     case 'FETCH_UNICORNS':
       return Object.assign({}, state, {
         entities: Object.assign({}, state.entities, {

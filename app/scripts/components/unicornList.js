@@ -11,7 +11,8 @@ export default (props) => {
                color={unicorn.color}
                power={unicorn.power}
                type={props.type}
-               session={props.session}/>
+               session={props.session}
+               users={props.users}/>
     )
   });
   return (

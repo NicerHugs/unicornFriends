@@ -16,17 +16,14 @@ class New extends React.Component {
       name: this.refs.name.value,
       color: this.refs.color.value,
       power: this.refs.power.value,
-      creator: this.props.session.user
+      creator: this.props.session.id
     }
-    console.log(store.getState());
     store.dispatch(actions.REQUEST_NEW_UNICORN(data));
-    console.log(store.getState());
     UnicornService.saveNew(data).then(response => {
       store.dispatch(actions.RECEIVE_NEW_UNICORN(response))
       this.refs.name.value = '';
       this.refs.color.value = '';
       this.refs.power.value = '';
-      console.log(store.getState());
     });
   }
   render() {

@@ -21,16 +21,12 @@ class User extends React.Component {
       } else {
         unicornIds = this.props.session.unicornFriends || [];
       }
-      console.log(unicornIds);
       let unLoadedUnicorns = unicornIds.filter( id => {
-        console.log(id);
         return !this.props.unicorns[id]
       });
       if (unLoadedUnicorns.length) {
-        console.log('there are unloaded unicorns', unLoadedUnicorns, 'fetching:', this.props.unicorns.isFetching);
         store.dispatch(actions.FETCH_UNICORNS());
         UnicornService.fetchByIds(unLoadedUnicorns).then(response => {
-          console.log(response);
           store.dispatch(actions.RECEIVE_UNICORNS(response))
         });
       }
@@ -38,7 +34,7 @@ class User extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    // this.fetchNeededUnicorns(newProps.unicorns);
+    this.fetchNeededUnicorns(newProps.unicorns);
   }
 
   componentDidMount() {
@@ -55,7 +51,7 @@ class User extends React.Component {
     return (
       <div>
         {this.props.session.username}
-        <UnicornList session={this.props.session} unicorns={unicorns} />
+        <UnicornList session={this.props.session} unicorns={unicorns} users={this.props.users}/>
       </div>
     )
   }
