@@ -28,7 +28,6 @@ class Unicorn extends React.Component {
   }
 
   render() {
-    console.log(this.props.users.isFetching);
     let userLink = {
       to: this.props.creator === this.props.session.id ? 'my-unicorns' : `users/${this.props.creator}`,
       text: this.props.creator === this.props.session.id ? 'you' : this.props.users[this.props.creator] ? this.props.users[this.props.creator].username : undefined

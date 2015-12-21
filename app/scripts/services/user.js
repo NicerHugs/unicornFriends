@@ -73,6 +73,7 @@ export default {
           __op: "AddUnique",
           objects:[unicornId]}
       };
+      console.log(headers);
       $.ajax({
         headers,
         url: 'https://api.parse.com/1/users/' + userId,

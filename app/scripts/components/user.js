@@ -15,9 +15,9 @@ class User extends React.Component {
 
   fetchNeededUnicorns(unicorns) {
     if (!unicorns.isFetching) {
-      let unicornIds;
-      if (this.props.params.userId) {
-        unicornIds = unicorns.users[this.props.params.userId].unicornFriends;
+      let unicornIds = [];
+      if (this.props.params.userId && this.props.users[this.props.params.userId]) {
+        unicornIds = this.props.users[this.props.params.userId].unicornFriends;
       } else {
         unicornIds = this.props.session.unicornFriends || [];
       }
@@ -42,7 +42,16 @@ class User extends React.Component {
   }
 
   render() {
-    let unicornIds = this.props.session.unicornFriends || [];
+    let unicornIds,
+        username;
+    if (this.props.params.userId) {
+      let user = this.props.users[this.props.params.userId];
+      unicornIds = user ? user.unicornFriends : [];
+      username = user ? user.username : ''
+    } else {
+      unicornIds = this.props.session.unicornFriends || [];
+      username = this.props.session.username;
+    }
     let unicorns = unicornIds.map(id => {
       return this.props.unicorns[id];
     }).filter( unicorn => {
@@ -50,7 +59,7 @@ class User extends React.Component {
     });
     return (
       <div>
-        {this.props.session.username}
+        {username}
         <UnicornList session={this.props.session} unicorns={unicorns} users={this.props.users}/>
       </div>
     )
